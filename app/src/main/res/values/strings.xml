@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Speech To Text</string>
+    <string name="action_settings">Settings</string>
+    <string name="speech_record_start">Start Recording</string>
+    <string name="speech_record_stop">Stop Recording</string>
+    <string name="sample_sentence">This year the National Environmental Science Competition received excellent undergraduate and postgraduate entries from all across the country, with a wide range of projects. We are delighted that our awards are encouraging exciting and valuable projects that go beyond research and analysis to develop solutions for a number of key problems. Information about the shortlisted projects will be posted on our website in the first week of June.</string>
+    <string name="timer_fragment">Timer Text</string>
+    <string name="accuracy">Accuracy %</string>
+    <string name="time">Time</string>
+    <string name="speechRecordView">Recorded speech will be shown here!!!!!!</string>
+
+</resources>
