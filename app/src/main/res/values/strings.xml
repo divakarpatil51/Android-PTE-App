@@ -6,7 +6,10 @@
     <string name="sample_sentence">This year the National Environmental Science Competition received excellent undergraduate and postgraduate entries from all across the country, with a wide range of projects. We are delighted that our awards are encouraging exciting and valuable projects that go beyond research and analysis to develop solutions for a number of key problems. Information about the shortlisted projects will be posted on our website in the first week of June.</string>
     <string name="timer_fragment">Timer Text</string>
     <string name="accuracy">Accuracy %</string>
-    <string name="time">Time</string>
-    <string name="speechRecordView">Recorded speech will be shown here!!!!!!</string>
-
+    <string name="time">00:40</string>
+    <string name="showRecordedTextButton">Show recorded text</string>
+    <string name="nextButton">Next</string>
+    <string name="previousButton">Previous</string>
+    <string name="paragraphNumber">Paragraph:</string>
+    <string name="initialParaNumber">1</string>
 </resources>

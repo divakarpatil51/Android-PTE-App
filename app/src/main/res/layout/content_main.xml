@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ScrollView01"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -8,9 +9,10 @@
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/darker_gray"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.example.divakarpatil.speechtotext.MainActivity"
         tools:layout_editor_absoluteY="81dp"
@@ -18,11 +20,11 @@
 
         <TextView
             android:id="@+id/timerTextView"
-            android:layout_width="114dp"
+            android:layout_width="78dp"
             android:layout_height="32dp"
             android:layout_marginEnd="3dp"
-            android:layout_marginStart="200dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="70dp"
             android:text="@string/time"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,66 +39,102 @@
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="390dp"
             android:background="?android:attr/colorPrimaryDark"
             android:text="@string/speech_record_start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView"
             app:srcCompat="@mipmap/ic_settings_voice_white_24dp" />
 
         <TextView
-            android:id="@+id/speechRecordingTextView"
-            android:layout_width="370dp"
-            android:layout_height="118dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/speechRecordView"
-            app:layout_constraintBottom_toTopOf="@+id/speechRecorderButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView"
-            app:layout_constraintVertical_bias="0.196" />
-
-        <TextView
             android:id="@+id/sentencesTextView"
-            android:layout_width="372dp"
-            android:layout_height="197dp"
+            android:layout_width="404dp"
+            android:layout_height="209dp"
             android:layout_marginEnd="1dp"
             android:layout_marginStart="1dp"
+            android:layout_marginTop="40dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.666"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timerTextView" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_marginBottom="83dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="29dp"
+            android:layout_width="72dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
             android:text="@string/accuracy"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/accuracyPercentage"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/speechRecordingTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView" />
 
         <TextView
             android:id="@+id/accuracyPercentage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="31dp"
             android:layout_marginEnd="211dp"
-            android:layout_marginTop="29dp"
-            app:layout_constraintBottom_toTopOf="@+id/speechRecorderButton"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.319"
             app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/speechRecordingTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView" />
+
+        <Button
+            android:id="@+id/previousButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="168dp"
+            android:text="@string/previousButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="168dp"
+            android:text="@string/nextButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView" />
+
+        <Button
+            android:id="@+id/showRecordTextButton"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="250dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="84dp"
+            android:text="@string/showRecordedTextButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="29dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="70dp"
+            android:text="@string/paragraphNumber"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/paragraphNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="70dp"
+            android:text="@string/initialParaNumber"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </android.support.constraint.ConstraintLayout>
