@@ -1,4 +1,4 @@
-package com.example.divakarpatil.speechtotext;
+package com.example.divakarpatil.pte;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.divakarpatil.speechtotext;
+package com.example.divakarpatil.pte.speaking;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -10,6 +10,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,25 +18,36 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.divakarpatil.pte.R;
+import com.example.divakarpatil.pte.utils.PTECountDownTimer;
+import com.example.divakarpatil.pte.utils.PTERecognitionListener;
+import com.example.divakarpatil.pte.utils.SentencesJsonReader;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static com.example.divakarpatil.speechtotext.R.string.speech_record_stop;
+import static com.example.divakarpatil.pte.R.string.speech_record_stop;
 
-public class MainActivity extends AppCompatActivity {
+public class ReadAloudActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = ReadAloudActivity.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_RECORD_VOICE = 100;
     private static int currentParagraph = 0;
     private TextView timerTextView, sentencesTextView, accuracyPercentageView, paragraphNumberTextView;
-    private Button speechToTextButton, showRecordButton, nextButton, previousButton;
+    private Button speechToTextButton, showRecordButton, nextButton, previousButton, mediaPlayerButton;
     private SpeechRecognizer recognizer;
     private SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
     private PTECountDownTimer timer = null;
+
+    //TODO: Check how to record voice and do STT synchronously
+//    private MediaRecorder mediaRecorder = null;
+//    private MediaPlayer mediaPlayer = null;
+//    private String mediaFileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +56,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         initializeViews();
         handlePermission();
         SentencesJsonReader.readJson(this);
+//TODO: Check how to record voice and do STT synchronously
+//        mediaFileName = getExternalCacheDir().getAbsolutePath();
+//        mediaFileName += "Recording_Para_";
 
         timer = new PTECountDownTimer(timerTextView, 40000, 1);
 
@@ -60,6 +78,38 @@ public class MainActivity extends AppCompatActivity {
         showRecordButton.setOnClickListener(getShowRecordButtonListener());
         nextButton.setOnClickListener(handleNextButton());
         previousButton.setOnClickListener(handlePreviousButtonListener());
+
+        //TODO: Check how to record voice and do STT synchronously
+//        mediaPlayerButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mediaPlayerButton.getText().equals(getBaseContext().getString(R.string.audioRecordPlayButton))) {
+//                    mediaPlayerButton.setText(R.string.audioRecordStopButton);
+//                    mediaPlayer = new MediaPlayer();
+//                    try {
+//                        mediaPlayer.setDataSource(mediaFileName + paragraphNumber);
+//                        mediaPlayer.prepare();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    mediaPlayer.start();
+//                } else {
+//                    mediaPlayerButton.setText(R.string.audioRecordPlayButton);
+//                    mediaPlayer.stop();
+//                }
+//            }
+//        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @NonNull
@@ -91,6 +141,19 @@ public class MainActivity extends AppCompatActivity {
         resetTimer();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean permissionToRecordAccepted = false;
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_RECORD_VOICE:
+                permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+        if (!permissionToRecordAccepted) finish();
+
+    }
+
     private void initializeViews() {
 
         accuracyPercentageView = findViewById(R.id.accuracyPercentage);
@@ -101,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
         timerTextView = findViewById(R.id.timerTextView);
         speechToTextButton = findViewById(R.id.speechRecorderButton);
         showRecordButton = findViewById(R.id.showRecordTextButton);
+        mediaPlayerButton = findViewById(R.id.mediaPlayerButton);
     }
 
     private void handlePermission() {
@@ -117,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void resetTimer() {
         timer.cancel();
-        timerTextView.setText(getBaseContext().getString(R.string.time));
+        timerTextView.setText(getApplicationContext().getString(R.string.time));
     }
 
     @NonNull
@@ -126,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReadAloudActivity.this);
                 AlertDialog dialog = builder.setMessage(spannableStringBuilder)
                         .setTitle(getApplicationContext().getString(R.string.accuracy) + ": " + accuracyPercentageView.getText())
                         .create();
@@ -145,20 +209,27 @@ public class MainActivity extends AppCompatActivity {
                     speechToTextButton.setText(speech_record_stop);
                     accuracyPercentageView.setText("");
                     spannableStringBuilder = new SpannableStringBuilder();
+//                    startMediaRecorder();
                     startVoiceInput();
                     nextButton.setEnabled(false);
                     previousButton.setEnabled(false);
+
                 } else {
                     timer.cancel();
                     speechToTextButton.setText(R.string.speech_record_start);
+//                    mediaRecorder.stop();
+//                    mediaRecorder.release();
                     recognizer.stopListening();
                     showRecordButton.setEnabled(false);
                     nextButton.setEnabled(currentParagraph != SentencesJsonReader.getJsonDataSize());
                     previousButton.setEnabled(currentParagraph != 0);
+
                 }
             }
         };
     }
+
+//    privatss
 
     @Override
     protected void onPause() {

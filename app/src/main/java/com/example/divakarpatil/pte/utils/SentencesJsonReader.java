@@ -1,4 +1,4 @@
-package com.example.divakarpatil.speechtotext;
+package com.example.divakarpatil.pte.utils;
 
 import android.content.Context;
 import android.util.JsonReader;
@@ -15,11 +15,11 @@ import java.util.ArrayList;
  * Created by Divakar Patil on 14-03-2018.
  */
 
-class SentencesJsonReader {
+public class SentencesJsonReader {
 
     private static ArrayList<String> jsonArray = new ArrayList<>();
 
-    static void readJson(Context context) {
+    public static void readJson(Context context) {
         try (InputStream inputStream = context.getAssets().open("sentences.json");
              JsonReader reader = new JsonReader(new BufferedReader(new InputStreamReader(inputStream)))) {
 
@@ -34,11 +34,11 @@ class SentencesJsonReader {
         }
     }
 
-    static String getParagraph(int i) {
+    public static String getParagraph(int i) {
         return jsonArray.get(i);
     }
 
-    static int getJsonDataSize() {
+    public static int getJsonDataSize() {
         return jsonArray.size() - 1;
     }
 }

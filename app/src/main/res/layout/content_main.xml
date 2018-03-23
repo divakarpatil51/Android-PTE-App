@@ -14,7 +14,7 @@
         android:background="@android:color/darker_gray"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.example.divakarpatil.speechtotext.MainActivity"
+        tools:context="com.example.divakarpatil.pte.speaking.ReadAloudActivity"
         tools:layout_editor_absoluteY="81dp"
         tools:showIn="@layout/activity_main">
 
@@ -135,6 +135,16 @@
             android:text="@string/initialParaNumber"
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/mediaPlayerButton"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="84dp"
+            android:text="@string/audioRecordPlayButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sentencesTextView" />
 
 
     </android.support.constraint.ConstraintLayout>

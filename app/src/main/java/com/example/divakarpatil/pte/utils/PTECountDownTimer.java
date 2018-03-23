@@ -1,4 +1,4 @@
-package com.example.divakarpatil.speechtotext;
+package com.example.divakarpatil.pte.utils;
 
 import android.os.CountDownTimer;
 import android.widget.TextView;
@@ -14,7 +14,7 @@ public class PTECountDownTimer extends CountDownTimer {
 
     private TextView textView;
 
-    PTECountDownTimer(TextView textView, long millisInFuture, long countDownInterval) {
+    public PTECountDownTimer(TextView textView, long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
         this.textView = textView;
     }

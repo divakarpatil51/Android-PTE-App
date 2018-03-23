@@ -1,7 +1,8 @@
-package com.example.divakarpatil.speechtotext;
+package com.example.divakarpatil.pte.utils;
 
 import android.os.Bundle;
 import android.speech.RecognitionListener;
+import android.util.Log;
 
 /**
  * Custom implementation of Recognition listener
@@ -27,7 +28,7 @@ public class PTERecognitionListener implements RecognitionListener {
 
     @Override
     public void onBufferReceived(byte[] buffer) {
-
+        Log.i("RecognitionListener", "onBufferReceived: " + buffer[0]);
     }
 
     @Override
