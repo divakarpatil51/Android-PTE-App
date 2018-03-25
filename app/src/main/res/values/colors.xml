@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorRed">#1eff4086</color>
+    <color name="colorSubSectionsList">#f8000000</color>
+    <color name="colorButtonNormal">#3F51B5</color>
+    <color name="colorControlHighlight">#303F9F</color>
+    <color name="colorMethodBackground">#596ffd</color>
 </resources>

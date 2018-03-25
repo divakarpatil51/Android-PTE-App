@@ -13,13 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".dashboard.PTEMainActivity"
             android:label="@string/title_activity_pte_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -29,14 +29,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".speaking.ReadAloudActivity"
+            android:name=".speaking.ReadAloudSamplesActivity"
             android:label="@string/readAloud"
             android:parentActivityName=".dashboard.PTEMainActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".dashboard.PTEMainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".speaking.SectionMethodActivity"
+            android:parentActivityName=".dashboard.PTEMainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".dashboard.PTEMainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

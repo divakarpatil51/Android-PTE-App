@@ -1,0 +1,45 @@
+Strategy:
+1. You have 30–40 seconds to go through the text. Whisper the para to ur self. Try to recognise and pronounce any difficult or long words. Understand what you're reading/saying!!!.
+2. When you speak into the microphone, 
+	a. read every single word and as clearly as possible. 
+	b. Do not miss out words or rush and read at a moderate pace
+	c. Read with meaning
+	d. try to link the words within phrases
+	e. do not emphasize grammar words such as prepositions and articles.
+
+Scoring:
+	Content: 0 -5 points
+		do not:
+			Misread any words
+			skip any words
+			add any words
+	
+	Pronunciation:
+		5 - Native-like: Native person should understand what you are saying
+		4 Advanced
+		3 Good
+		2 Intermediate
+		1 Low
+		0 Non-English
+	
+		Tips:
+		1. There are 44 sounds in spoken English out of which 19 are consonant sounds. For good pronunciation
+		   you should master this 44 sounds.
+		2. Word Stress - It is important that you should have proper Word stress so that machine will understand you easily
+
+	Oral fluency:
+		Rhythm : intonation
+		Phrasing
+			.5 second pause after..
+				full stops. /
+				commas, /
+				and / or / yet / but / so
+				
+			.5 second before
+				which / that
+			
+		No hesitation - no "ummm's" or "ahhhh'ss"
+			
+		No False start
+			
+		No repetitions

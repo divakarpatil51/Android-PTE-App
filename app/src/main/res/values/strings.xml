@@ -3,7 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="speech_record_start">Start Recording</string>
     <string name="speech_record_stop">Stop Recording</string>
-    <string name="sample_sentence">This year the National Environmental Science Competition received excellent undergraduate and postgraduate entries from all across the country, with a wide range of projects. We are delighted that our awards are encouraging exciting and valuable projects that go beyond research and analysis to develop solutions for a number of key problems. Information about the shortlisted projects will be posted on our website in the first week of June.</string>
     <string name="timer_fragment">Timer Text</string>
     <string name="accuracy">Accuracy %</string>
     <string name="time">00:40</string>
@@ -15,26 +14,36 @@
     <string name="audioRecordPlayButton">Start Playing</string>
     <string name="audioRecordStopButton">Stop Playing</string>
     <string name="title_activity_pte_main">PTE Sections</string>
+
     <string name="readAloud">Read Aloud</string>
     <string name="personalIntroduction">Personal Introduction</string>
-    <string name="repeatSentence">Repeat sentence</string>
-    <string name="describeImage">Describe image</string>
-    <string name="retellLecture">Re-tell lecture</string>
-    <string name="shortQuestions">Answer short question</string>
-    <string name="summarizeWrittenText">Summarize written text</string>
+    <string name="repeatSentence">Repeat Sentence</string>
+    <string name="describeImage">Describe Image</string>
+    <string name="retellLecture">Re-tell Lecture</string>
+    <string name="shortQuestions">Answer Short Questions</string>
+
+    <string name="summarizeWrittenText">Summarize Written Text</string>
     <string name="essay">Write Essay</string>
-    <string name="multipleChoiceSingleAnswer">Multiple choice choose single answer</string>
-    <string name="multipleChoiceMultipleAnswer">Multiple choice choose multiple answer</string>
-    <string name="reorderParagraph">Re-order paragraphs</string>
-    <string name="rFillUps">Reading - fill in the blanks</string>
-    <string name="rwFillUps">Reading and Writing - fill in the blanks</string>
-    <string name="summarizeSpokenText">Summarize spoken text</string>
-    <string name="listMCSA">Multiple choice choose multiple answer</string>
-    <string name="listMCMA">Multiple-choice, choose single answer</string>
-    <string name="lFillUps">Fill in the blanks</string>
-    <string name="highlightSummary">Highlight correct summary</string>
-    <string name="missingWord">Select missing word</string>
-    <string name="highlightIncorrect">Highlight incorrect words</string>
-    <string name="writeFromDictation">Write from dictation</string>
+
+    <string name="multipleChoiceSingleAnswer">Multiple Choice Choose Single Answer</string>
+    <string name="multipleChoiceMultipleAnswer">Multiple Choice Choose Multiple Answer</string>
+    <string name="reorderParagraph">Re-order Paragraphs</string>
+    <string name="rFillUps">Reading - Fill In The Blanks</string>
+    <string name="rwFillUps">Reading and Writing - Fill In The Blanks</string>
+
+    <string name="summarizeSpokenText">Summarize Spoken Text</string>
+    <string name="listMCSA">Listening - Multiple Choice Choose Multiple Answer</string>
+    <string name="listMCMA">Listening - Multiple Choice Choose Single Answer</string>
+    <string name="lFillUps">Listening - Fill In The Blanks</string>
+    <string name="highlightSummary">Highlight Correct Summary</string>
+    <string name="missingWord">Select Missing Word</string>
+    <string name="highlightIncorrect">Highlight Incorrect Words</string>
+    <string name="writeFromDictation">Write From Dictation</string>
+
+    <string name="approachForRA">Approach</string>
+    <string name="title_activity_ptemain_card">PTE Sections</string>
+    <string name="speakingView">Speaking</string>
+    <string name="readAloudSamples">Try it yourself!!!</string>
+    <string name="speechRecorderButton">Speech Recorder</string>
 
 </resources>

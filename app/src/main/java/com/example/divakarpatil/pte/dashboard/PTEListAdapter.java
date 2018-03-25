@@ -10,7 +10,8 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import com.example.divakarpatil.pte.R;
-import com.example.divakarpatil.pte.speaking.ReadAloudActivity;
+import com.example.divakarpatil.pte.speaking.SectionMethodActivity;
+import com.example.divakarpatil.pte.utils.SectionType;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,6 @@ public class PTEListAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> parentItems;
     private ArrayList<ArrayList<String>> childItems;
     private LayoutInflater inflater;
-
 
     PTEListAdapter(ArrayList<String> parentItems, ArrayList<ArrayList<String>> childItems) {
         this.parentItems = parentItems;
@@ -145,10 +145,10 @@ public class PTEListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.row, parent);
+            convertView = inflater.inflate(R.layout.row, parent, false);
         }
         ((CheckedTextView) convertView).setText(parentItems.get(groupPosition));
-        ((CheckedTextView) convertView).setChecked(true);
+        ((CheckedTextView) convertView).setChecked(isExpanded);
 
         return convertView;
     }
@@ -175,23 +175,20 @@ public class PTEListAdapter extends BaseExpandableListAdapter {
         ArrayList<String> child = childItems.get(groupPosition);
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.group, parent);
+            convertView = inflater.inflate(R.layout.group, parent, false);
         }
 
         TextView textView = convertView.findViewById(R.id.groupTextView);
         textView.setText(child.get(childPosition));
-        textView.setElegantTextHeight(true);
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String childClicked = childItems.get(groupPosition).get(childPosition);
-                switch (childClicked) {
-                    case "Read Aloud":
-                        Intent intent = new Intent(activity, ReadAloudActivity.class);
-                        activity.startActivity(intent);
-                        break;
-                }
+                Intent intent = new Intent(activity, SectionMethodActivity.class);
+                intent.putExtra("Section", SectionType.getSectionType(childClicked));
+                activity.startActivity(intent);
 
             }
         });

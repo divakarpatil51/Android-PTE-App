@@ -17,9 +17,10 @@ import java.util.ArrayList;
 
 public class SentencesJsonReader {
 
-    private static ArrayList<String> jsonArray = new ArrayList<>();
+    private static ArrayList<String> jsonArray;
 
     public static void readJson(Context context) {
+        jsonArray = new ArrayList<>();
         try (InputStream inputStream = context.getAssets().open("sentences.json");
              JsonReader reader = new JsonReader(new BufferedReader(new InputStreamReader(inputStream)))) {
 

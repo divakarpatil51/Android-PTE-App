@@ -1,16 +1,18 @@
 package com.example.divakarpatil.pte.dashboard;
 
-import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.example.divakarpatil.pte.R;
 
 import java.util.ArrayList;
 
-public class PTEMainActivity extends ExpandableListActivity {
+public class PTEMainActivity extends AppCompatActivity {
 
     private ArrayList<String> parentItems = new ArrayList<>();
     private ArrayList<ArrayList<String>> childItems = new ArrayList<>();
@@ -19,8 +21,10 @@ public class PTEMainActivity extends ExpandableListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ptemain);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        ExpandableListView expandableListView = getExpandableListView();
+        ExpandableListView expandableListView = findViewById(R.id.list);
         expandableListView.setDividerHeight(2);
         expandableListView.setGroupIndicator(null);
         expandableListView.setClickable(true);
@@ -31,14 +35,20 @@ public class PTEMainActivity extends ExpandableListActivity {
         PTEListAdapter listAdapter = new PTEListAdapter(parentItems, childItems);
         listAdapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
         expandableListView.setAdapter(listAdapter);
-        expandableListView.setOnChildClickListener(this);
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                return false;
+            }
+        });
     }
 
     private void setGroupItems() {
-        parentItems.add("> Speaking");
-        parentItems.add("> Writing");
-        parentItems.add("> Reading");
-        parentItems.add("> Listening");
+        parentItems.add("Speaking");
+        parentItems.add("Writing");
+        parentItems.add("Reading");
+        parentItems.add("Listening");
     }
 
     private void setChildItems() {
