@@ -145,7 +145,7 @@ public class PTEListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.row, parent, false);
+            convertView = inflater.inflate(R.layout.row, null);
         }
         ((CheckedTextView) convertView).setText(parentItems.get(groupPosition));
         ((CheckedTextView) convertView).setChecked(isExpanded);
@@ -175,7 +175,7 @@ public class PTEListAdapter extends BaseExpandableListAdapter {
         ArrayList<String> child = childItems.get(groupPosition);
 
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.group, parent, false);
+            convertView = inflater.inflate(R.layout.group, null);
         }
 
         TextView textView = convertView.findViewById(R.id.groupTextView);
