@@ -10,7 +10,7 @@
     <string name="nextButton">Next</string>
     <string name="previousButton">Previous</string>
     <string name="paragraphNumber">Paragraph:</string>
-    <string name="initialParaNumber">0</string>
+    <string name="initialParaNumber">1</string>
     <string name="audioRecordPlayButton">Start Playing</string>
     <string name="audioRecordStopButton">Stop Playing</string>
     <string name="title_activity_pte_main">PTE Sections</string>
@@ -45,5 +45,13 @@
     <string name="speakingView">Speaking</string>
     <string name="readAloudSamples">Try it yourself!!!</string>
     <string name="speechRecorderButton">Speech Recorder</string>
+    <string name="resetDataMessage">Starting over will clear your progress. Are you sure you want to continue?</string>
+    <string name="cancelText">Cancel</string>
+    <string name="okText">OK</string>
+    <string name="totalParagraphText">%d of %d</string>
+    <string name="gotoHomeView">Goto Home</string>
+    <string name="restartTest">Restart Test</string>
+    <string name="saveResult">Save Result</string>
+
 
 </resources>

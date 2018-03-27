@@ -40,6 +40,6 @@ public class SentencesJsonReader {
     }
 
     public static int getJsonDataSize() {
-        return jsonArray.size() - 1;
+        return jsonArray.size();
     }
 }

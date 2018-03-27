@@ -61,6 +61,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".speaking.ResultActivity"
+            android:label="Result"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

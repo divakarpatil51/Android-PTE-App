@@ -2,10 +2,12 @@ package com.example.divakarpatil.pte.speaking;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import com.example.divakarpatil.pte.R;
 import com.example.divakarpatil.pte.utils.PTECountDownTimer;
 import com.example.divakarpatil.pte.utils.PTERecognitionListener;
+import com.example.divakarpatil.pte.utils.ParagraphResult;
 import com.example.divakarpatil.pte.utils.SentencesJsonReader;
 
 import java.util.ArrayList;
@@ -42,8 +46,13 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
     private SpeechRecognizer recognizer;
     private SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
     private PTECountDownTimer timer = null;
-    private ImageView speechToTextButton, previousButton, nextButton;
+    private ImageView speechToTextButton, nextButton;
     private boolean isSpeechStarted = false;
+    private ArrayList<ParagraphResult> paragraphResults = new ArrayList<>();
+    private Double ratingForParagraph = 0.0;
+    private double accuracy = 0.0;
+    private ParagraphResult result = null;
+    private long lastClickTime = 0;
 //    mediaPlayerButton
 //    private PTEVoicePlayer pteVoicePlayer = null;
 
@@ -64,14 +73,13 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
         timer = new PTECountDownTimer(timerTextView, 40000, 1);
 
         showRecordButton.setEnabled(false);
-        previousButton.setClickable(false);
-
-        sentencesTextView.setText(SentencesJsonReader.getParagraph(currentParagraph));
+        sentencesTextView.setText(SentencesJsonReader.getParagraph(currentParagraph++));
+        paragraphNumberTextView.setText(getString(R.string.totalParagraphText, 1, SentencesJsonReader.getJsonDataSize()));
 
         speechToTextButton.setOnClickListener(getSpeechToTextListener());
         showRecordButton.setOnClickListener(getShowRecordButtonListener());
         nextButton.setOnClickListener(handleNextButton());
-        previousButton.setOnClickListener(handlePreviousButtonListener());
+
 //        mediaPlayerButton.setEnabled(true);
 
 //        mediaPlayerButton.setOnClickListener(new View.OnClickListener() {
@@ -88,34 +96,56 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
 //        });
     }
 
+    private void initializeViews() {
+
+        accuracyPercentageView = findViewById(R.id.accuracyPercentage);
+        sentencesTextView = findViewById(R.id.sentencesTextView);
+        nextButton = findViewById(R.id.nextButton);
+        paragraphNumberTextView = findViewById(R.id.paragraphNumberTextView);
+        timerTextView = findViewById(R.id.timerTextView);
+        speechToTextButton = findViewById(R.id.speechRecorderButton);
+        showRecordButton = findViewById(R.id.showRecordTextButton);
+//        mediaPlayerButton = findViewById(R.id.mediaPlayerButton);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                //Clear the data
-                currentParagraph = 0;
-                resetTimer();
-                timer = null;
-                spannableStringBuilder = null;
-                if (recognizer != null) {
-                    recognizer.destroy();
-                    recognizer = null;
-                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReadAloudSamplesActivity.this);
+                AlertDialog dialog = builder.setMessage(R.string.resetDataMessage)
+                        .create();
+                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancelText), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.okText), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NavUtils.navigateUpFromSameTask(ReadAloudSamplesActivity.this);
+                        clearTheActivityData();
+                    }
+                });
+                dialog.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @NonNull
-    private View.OnClickListener handlePreviousButtonListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleParagraphChange(--currentParagraph);
-            }
-        };
+    private void clearTheActivityData() {
+        //Clear the data
+        currentParagraph = 0;
+        resetTimer();
+        timer = null;
+        paragraphResults = null;
+        if (recognizer != null) {
+            recognizer.destroy();
+            recognizer = null;
+        }
     }
 
     @NonNull
@@ -123,26 +153,34 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleParagraphChange(++currentParagraph);
+                // preventing double click, using threshold of 1000 ms
+                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                    return;
+                }
+
+                lastClickTime = SystemClock.elapsedRealtime();
+
+                result = new ParagraphResult(currentParagraph, accuracy, ratingForParagraph, Html.toHtml(spannableStringBuilder, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE));
+                paragraphResults.add(result);
+
+                if (currentParagraph == SentencesJsonReader.getJsonDataSize()) {
+                    Intent intent = new Intent(ReadAloudSamplesActivity.this, ResultActivity.class);
+                    intent.putParcelableArrayListExtra("Paragraph_Results", paragraphResults);
+                    startActivity(intent);
+                    return;
+                }
+
+                int paraDisplayValue = currentParagraph + 1;
+                sentencesTextView.setText(SentencesJsonReader.getParagraph(currentParagraph));
+
+                boolean isLastParagraph = SentencesJsonReader.getJsonDataSize() == paraDisplayValue;
+                nextButton.setBackground(isLastParagraph ? getDrawable(R.drawable.ic_done_all_black_24dp)
+                        : getDrawable(R.drawable.ic_navigate_next_black_24dp));
+                paragraphNumberTextView.setText(getString(R.string.totalParagraphText, paraDisplayValue, SentencesJsonReader.getJsonDataSize()));
+                resetTimer();
+                currentParagraph++;
             }
         };
-    }
-
-    private void handleParagraphChange(int currentParagraph) {
-
-        sentencesTextView.setText(SentencesJsonReader.getParagraph(currentParagraph));
-
-        boolean isFirstParagraph = currentParagraph == 0;
-        previousButton.setClickable(!isFirstParagraph);
-        previousButton.setBackground(isFirstParagraph ? getDrawable(R.drawable.ic_navigate_before_disabled_24dp)
-                : getDrawable(R.drawable.ic_navigate_before_black_24dp));
-
-        boolean isLastParagraph = SentencesJsonReader.getJsonDataSize() == currentParagraph;
-        nextButton.setClickable(!isLastParagraph);
-        nextButton.setBackground(isLastParagraph ? getDrawable(R.drawable.ic_done_all_black_24dp)
-                : getDrawable(R.drawable.ic_navigate_next_black_24dp));
-        paragraphNumberTextView.setText(String.format(Locale.getDefault(), "%d", currentParagraph));
-        resetTimer();
     }
 
     @Override
@@ -158,19 +196,6 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
 
     }
 
-    private void initializeViews() {
-
-        accuracyPercentageView = findViewById(R.id.accuracyPercentage);
-        sentencesTextView = findViewById(R.id.sentencesTextView);
-        previousButton = findViewById(R.id.previousButton);
-        nextButton = findViewById(R.id.nextButton);
-        paragraphNumberTextView = findViewById(R.id.paragraphNumberTextView);
-        timerTextView = findViewById(R.id.timerTextView);
-        speechToTextButton = findViewById(R.id.speechRecorderButton);
-        showRecordButton = findViewById(R.id.showRecordTextButton);
-//        mediaPlayerButton = findViewById(R.id.mediaPlayerButton);
-    }
-
     private void handlePermission() {
 
         if (ContextCompat.checkSelfPermission(this,
@@ -183,9 +208,17 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        clearTheActivityData();
+    }
+
     private void resetTimer() {
-        timer.cancel();
-        timerTextView.setText(getApplicationContext().getString(R.string.time));
+        if (timer != null) {
+            timer.cancel();
+            timerTextView.setText(getApplicationContext().getString(R.string.time));
+        }
     }
 
     @NonNull
@@ -213,15 +246,12 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
                     accuracyPercentageView.setText("");
                     spannableStringBuilder = new SpannableStringBuilder();
                     nextButton.setClickable(false);
-                    previousButton.setClickable(false);
                     speechToTextButton.setBackground(getDrawable(R.drawable.ic_stop_black_24dp));
                     startSpeechRecognition();
                 } else {
                     timer.cancel();
-
                     showRecordButton.setEnabled(false);
-                    nextButton.setClickable(currentParagraph != SentencesJsonReader.getJsonDataSize());
-                    previousButton.setClickable(currentParagraph != 0);
+                    nextButton.setClickable(true);
                     speechToTextButton.setBackground(getDrawable(R.drawable.ic_keyboard_voice_black_24dp));
                     recognizer.stopListening();
                 }
@@ -279,9 +309,10 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
                     }
                 }
 
-                double accuracy = ((double) correctWords / (double) originalText.length) * 100;
+                accuracy = ((double) correctWords / (double) originalText.length) * 100;
                 accuracyPercentageView.setText(String.format(Locale.getDefault(), "%.2f", accuracy));
                 showRecordButton.setEnabled(true);
+                ratingForParagraph = accuracy * 5 / 100;
             }
         };
     }
