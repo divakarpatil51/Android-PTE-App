@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
@@ -31,7 +30,10 @@ import com.example.divakarpatil.pte.R;
 import com.example.divakarpatil.pte.utils.PTECountDownTimer;
 import com.example.divakarpatil.pte.utils.PTERecognitionListener;
 import com.example.divakarpatil.pte.utils.ParagraphResult;
+import com.example.divakarpatil.pte.utils.SectionType;
 import com.example.divakarpatil.pte.utils.SentencesJsonReader;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -52,7 +54,6 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
     private Double ratingForParagraph = 0.0;
     private double accuracy = 0.0;
     private ParagraphResult result = null;
-    private long lastClickTime = 0;
 //    mediaPlayerButton
 //    private PTEVoicePlayer pteVoicePlayer = null;
 
@@ -126,7 +127,11 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
                 dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.okText), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        NavUtils.navigateUpFromSameTask(ReadAloudSamplesActivity.this);
+                        Intent intent = getParentActivityIntent();
+                        if (intent == null) {
+                            intent = new Intent(ReadAloudSamplesActivity.this, SectionMethodActivity.class);
+                        }
+                        NavUtils.navigateUpTo(ReadAloudSamplesActivity.this, intent.putExtra("Section", SectionType.READ_ALOUD));
                         clearTheActivityData();
                     }
                 });
@@ -148,17 +153,22 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        currentParagraph = 0;
+        timer = new PTECountDownTimer(timerTextView, 40000, 1);
+        paragraphResults = new ArrayList<>();
+    }
+
     @NonNull
     private View.OnClickListener handleNextButton() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // preventing double click, using threshold of 1000 ms
-                if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
-                    return;
-                }
 
-                lastClickTime = SystemClock.elapsedRealtime();
+                accuracyPercentageView.setText("");
+                showRecordButton.setEnabled(false);
 
                 result = new ParagraphResult(currentParagraph, accuracy, ratingForParagraph, Html.toHtml(spannableStringBuilder, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE));
                 paragraphResults.add(result);
@@ -170,6 +180,9 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
                     return;
                 }
 
+                accuracy = 0.0;
+                ratingForParagraph = 0.0;
+                spannableStringBuilder = new SpannableStringBuilder();
                 int paraDisplayValue = currentParagraph + 1;
                 sentencesTextView.setText(SentencesJsonReader.getParagraph(currentParagraph));
 
@@ -244,6 +257,7 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
                 if (!isSpeechStarted) {
                     timer.start();
                     accuracyPercentageView.setText("");
+                    showRecordButton.setEnabled(false);
                     spannableStringBuilder = new SpannableStringBuilder();
                     nextButton.setClickable(false);
                     speechToTextButton.setBackground(getDrawable(R.drawable.ic_stop_black_24dp));
@@ -268,11 +282,6 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
     private void startSpeechRecognition() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 3000);
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 3000);
-        intent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 100000000000000L);
 
         recognizer = SpeechRecognizer.createSpeechRecognizer(this);
         recognizer.setRecognitionListener(addRecognitionListener());
@@ -291,13 +300,19 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
                     return;
                 }
 
+                //Using 0th result as it has highest confidence score
                 String[] myText = matches.get(0).toLowerCase().split(" ");
                 String[] originalText = sentencesTextView.getText().toString().toLowerCase().split(" ");
                 int correctWords = 0;
-
                 for (int i = 0; i < originalText.length; i++) {
                     try {
                         SpannableString string = new SpannableString(myText[i] + " ");
+                        boolean containsExtraChar = StringUtils.containsAny(originalText[i], new char[]{';', '.', ',', '"', '\''});
+
+                        if (containsExtraChar) {
+                            originalText[i] = originalText[i].substring(0, originalText[i].length() - 1);
+                        }
+
                         if (originalText[i].equals(myText[i])) {
                             correctWords++;
                         } else {

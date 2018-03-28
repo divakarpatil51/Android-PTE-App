@@ -1,7 +1,6 @@
 package com.example.divakarpatil.pte.speaking;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import com.example.divakarpatil.pte.utils.ParagraphResult;
 
 import java.util.ArrayList;
 
-public class ResultActivity extends AppCompatActivity implements RecyclerViewFragment.OnFragmentInteractionListener {
+public class ResultActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,20 +51,5 @@ public class ResultActivity extends AppCompatActivity implements RecyclerViewFra
     @Override
     public void onBackPressed() {
         //do nothing
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    /**
-     * Called when pointer capture is enabled or disabled for the current window.
-     *
-     * @param hasCapture True if the window has pointer capture.
-     */
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }
