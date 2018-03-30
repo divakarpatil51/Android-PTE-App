@@ -32,7 +32,7 @@ public class SectionMethodActivity extends AppCompatActivity {
         setTitle(section.getSectionName());
         try {
             WebView readAloudMethodView = findViewById(R.id.readAloudMethod);
-            PTETextFileReader reader = new PTETextFileReader(getAssets().open(section.getFileName()));
+            PTETextFileReader reader = new PTETextFileReader(getAssets().open(section.getFilePath()));
             readAloudMethodView.loadDataWithBaseURL(null, reader.getFileData(), "text/html", "UTF-8", null);
         } catch (IOException e) {
             e.printStackTrace();
