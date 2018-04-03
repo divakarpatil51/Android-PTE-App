@@ -1,4 +1,4 @@
-package com.example.divakarpatil.pte.speaking;
+package com.example.divakarpatil.pte.speaking.readaloud;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.divakarpatil.pte.R;
+import com.example.divakarpatil.pte.speaking.SectionMethodActivity;
 import com.example.divakarpatil.pte.utils.PTECountDownTimer;
 import com.example.divakarpatil.pte.utils.PTERecognitionListener;
 import com.example.divakarpatil.pte.utils.ParagraphResult;
@@ -176,6 +177,7 @@ public class ReadAloudSamplesActivity extends AppCompatActivity {
                 if (currentParagraph == SentencesJsonReader.getJsonDataSize()) {
                     Intent intent = new Intent(ReadAloudSamplesActivity.this, ResultActivity.class);
                     intent.putParcelableArrayListExtra("Paragraph_Results", paragraphResults);
+                    intent.putExtra("PARENT_ACTIVITY", "ReadAloudSamplesActivity");
                     startActivity(intent);
                     return;
                 }

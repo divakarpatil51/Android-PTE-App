@@ -1,4 +1,4 @@
-package com.example.divakarpatil.pte.speaking;
+package com.example.divakarpatil.pte.speaking.readaloud;
 
 import android.app.AlertDialog;
 import android.content.Context;

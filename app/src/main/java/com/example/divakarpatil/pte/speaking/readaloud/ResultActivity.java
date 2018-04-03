@@ -1,4 +1,4 @@
-package com.example.divakarpatil.pte.speaking;
+package com.example.divakarpatil.pte.speaking.readaloud;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.example.divakarpatil.pte.R;
 import com.example.divakarpatil.pte.dashboard.PTEMainActivity;
+import com.example.divakarpatil.pte.speaking.repeatsentence.RepeatSentenceSamplesActivity;
 import com.example.divakarpatil.pte.utils.ParagraphResult;
 
 import java.util.ArrayList;
@@ -42,8 +43,19 @@ public class ResultActivity extends AppCompatActivity {
         restartTheTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ResultActivity.this, ReadAloudSamplesActivity.class);
-                startActivity(intent);
+                String val = getIntent().getStringExtra("PARENT_ACTIVITY");
+                Intent intent;
+
+                switch (val) {
+                    case "RepeatSentenceSamplesActivity":
+                        intent = new Intent(ResultActivity.this, RepeatSentenceSamplesActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "ReadAloudSamplesActivity":
+                        intent = new Intent(ResultActivity.this, ReadAloudSamplesActivity.class);
+                        startActivity(intent);
+                        break;
+                }
             }
         });
     }

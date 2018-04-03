@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".speaking.ReadAloudSamplesActivity"
+            android:name=".speaking.readaloud.ReadAloudSamplesActivity"
             android:label="@string/readAloud"
             android:parentActivityName=".speaking.SectionMethodActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -64,8 +64,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".speaking.ResultActivity"
+            android:name=".speaking.readaloud.ResultActivity"
             android:label="Result"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".speaking.repeatsentence.RepeatSentenceSamplesActivity"
+            android:label="@string/title_activity_repeat_sentence_samples"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

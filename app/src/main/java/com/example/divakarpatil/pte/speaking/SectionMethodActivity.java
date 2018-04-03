@@ -11,6 +11,8 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 import com.example.divakarpatil.pte.R;
+import com.example.divakarpatil.pte.speaking.readaloud.ReadAloudSamplesActivity;
+import com.example.divakarpatil.pte.speaking.repeatsentence.RepeatSentenceSamplesActivity;
 import com.example.divakarpatil.pte.utils.PTETextFileReader;
 import com.example.divakarpatil.pte.utils.SectionType;
 
@@ -27,7 +29,7 @@ public class SectionMethodActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        SectionType section = (SectionType) getIntent().getSerializableExtra("Section");
+        final SectionType section = (SectionType) getIntent().getSerializableExtra("Section");
 
         setTitle(section.getSectionName());
         try {
@@ -42,8 +44,17 @@ public class SectionMethodActivity extends AppCompatActivity {
         tryItButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SectionMethodActivity.this, ReadAloudSamplesActivity.class);
-                startActivity(intent);
+                Intent intent;
+                switch (SectionType.getSectionType(section.getSectionName())) {
+                    case READ_ALOUD:
+                        intent = new Intent(SectionMethodActivity.this, ReadAloudSamplesActivity.class);
+                        startActivity(intent);
+                        break;
+                    case REPEAT_SENTENCE:
+                        intent = new Intent(SectionMethodActivity.this, RepeatSentenceSamplesActivity.class);
+                        startActivity(intent);
+                        break;
+                }
             }
         });
     }

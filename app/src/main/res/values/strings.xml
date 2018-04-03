@@ -52,6 +52,7 @@
     <string name="gotoHomeView">Goto Home</string>
     <string name="restartTest">Restart Test</string>
     <string name="saveResult">Save Result</string>
-
+    <string name="title_activity_repeat_sentence_samples">Repeat Sentence Samples</string>
+    <string name="title_repeat_sentence_sample">You will hear a sentence. Please repeat the sentence exactly as you hear it. The recording will start as soon as the sentence ends.</string>
 
 </resources>

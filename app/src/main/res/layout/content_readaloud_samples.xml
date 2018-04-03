@@ -8,7 +8,7 @@
     android:background="@android:color/darker_gray"
     android:visibility="visible"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.divakarpatil.pte.speaking.ReadAloudSamplesActivity"
+    tools:context="com.example.divakarpatil.pte.speaking.readaloud.ReadAloudSamplesActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:showIn="@layout/activity_readaloud_samples">
 
