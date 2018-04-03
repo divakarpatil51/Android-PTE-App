@@ -8,10 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.divakarpatil.pte.R;
 import com.example.divakarpatil.pte.speaking.SectionMethodActivity;
@@ -19,18 +19,19 @@ import com.example.divakarpatil.pte.speaking.readaloud.ResultActivity;
 import com.example.divakarpatil.pte.utils.ParagraphResult;
 import com.example.divakarpatil.pte.utils.SectionType;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RepeatSentenceSamplesActivity extends AppCompatActivity {
 
-    private int recordingNumber = 1;
+    private int recordingNumber = 0;
     private ImageView nextButton;
     private ParagraphResult result = null;
     private Double ratingForParagraph = 0.0;
     private double accuracy = 0.0;
     private ArrayList<ParagraphResult> paragraphResults = new ArrayList<>();
     private SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+    private TextView paragraphNumberTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,9 @@ public class RepeatSentenceSamplesActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nextButton = findViewById(R.id.repeatSentenceNextButton);
+
+        paragraphNumberTextView = findViewById(R.id.paragraphNumberTextView);
+
         ImageView repeatSentencePlayImageView = findViewById(R.id.repeatSentencePlayImageView);
         repeatSentencePlayImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,23 +65,24 @@ public class RepeatSentenceSamplesActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Rest", "Recording number: " + R.raw.class.getFields()[recordingNumber].getName());
+                recordingNumber++;
+                int fieldsLength = R.raw.class.getFields().length;
+                boolean isLastParagraph = recordingNumber == (fieldsLength);
+
                 result = new ParagraphResult(recordingNumber, accuracy, ratingForParagraph, Html.toHtml(spannableStringBuilder, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE));
                 paragraphResults.add(result);
 
-                Field[] fields = R.raw.class.getFields();
-                if (recordingNumber > fields.length) {
+
+                if (isLastParagraph) {
                     Intent intent = new Intent(RepeatSentenceSamplesActivity.this, ResultActivity.class);
                     intent.putParcelableArrayListExtra("Paragraph_Results", paragraphResults);
                     intent.putExtra("PARENT_ACTIVITY", "RepeatSentenceSamplesActivity");
                     startActivity(intent);
                     return;
                 }
-                boolean isLastParagraph = recordingNumber == fields.length;
-
-                nextButton.setBackground(isLastParagraph ? getDrawable(R.drawable.ic_done_all_black_24dp)
+                paragraphNumberTextView.setText(String.format(Locale.getDefault(), "%d", recordingNumber + 1));
+                nextButton.setBackground(recordingNumber == fieldsLength - 1 ? getDrawable(R.drawable.ic_done_all_black_24dp)
                         : getDrawable(R.drawable.ic_navigate_next_black_24dp));
-                recordingNumber++;
             }
         });
     }
