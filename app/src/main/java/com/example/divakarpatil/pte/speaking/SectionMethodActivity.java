@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.divakarpatil.pte.R;
 import com.example.divakarpatil.pte.speaking.readaloud.ReadAloudSamplesActivity;
@@ -53,6 +54,9 @@ public class SectionMethodActivity extends AppCompatActivity {
                     case REPEAT_SENTENCE:
                         intent = new Intent(SectionMethodActivity.this, RepeatSentenceSamplesActivity.class);
                         startActivity(intent);
+                        break;
+                    default:
+                        Toast.makeText(SectionMethodActivity.this, "Not yet implemented", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

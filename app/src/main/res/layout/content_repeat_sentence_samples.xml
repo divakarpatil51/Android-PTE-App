@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="100dp"
                 android:contentDescription="@string/title_activity_repeat_sentence_samples"
-                app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+                android:background="@drawable/ic_play_arrow_black_24dp" />
 
             <SeekBar
                 android:id="@+id/repeatSentenceSeekBar"
